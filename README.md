@@ -1,4 +1,4 @@
-# SimpleKernl
+# SimpleKernel
 
 ## A Table of Contents of Things I've learnt:
 
