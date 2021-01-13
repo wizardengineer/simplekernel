@@ -1,0 +1,4 @@
+*.d
+*.kernel
+*.elf
+*.o

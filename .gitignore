@@ -1,0 +1,42 @@
+# Compiled Object files
+*.obj
+*.slo
+*.lo
+*.o
+
+# Custom File and Folder
+Holder.txt
+build/
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Binaries
+*.exe
+*.dll
+*.lib
+*.ilk
+*.pdb
+*.elf
+
+# Project files
+bin/**
+
+# Visual Studio files
+.vs
+obj/**
+ipch
+*.psess
+*.vspx
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+© 2020 GitHub, Inc.
