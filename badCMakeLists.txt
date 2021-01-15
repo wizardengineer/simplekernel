@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 3.16.3)
+
+project(simplekernel LANGUAGE C ASM)
+
+include(libc/functions.cmake)
+
+set(CMAKE_C_FLAGS "-m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c")
+set(CMAKE_ASM_NASM_OBJECT_FORMAT "elf")
+
+# setting current dir for easy use
+set(CRT_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+# setting assembly code
+enable_language(ASM_NASM)
+if(CMAKE_ASM_COMPILER_LOADED)
+    set(CAN_USE_ASSEMBLER TRUE)
+    file(GLOBAL_RECURSE CMAKE_ASM_FILES "${CRT_DIR}/smkrnl/arch/i386/*.s")
+endif(CMAKE_ASM_COMPILER_LOADED)
+
+# setting link.ld
+set(CMAKE_LINKER "${CRT_DIR}/smkrnl/arch/i386/linker.ld")
+
+# setting kenrel c code
+file(GLOBAL_RECURSE KENREL_ARCH_C_FILES "${CRT_DIR}/smkrnl/arch/i386/*.c")
+file(GLOBAL_RECURSE KERNEL_C_FILES "${CRT_DIR}/smkrnl/*.c")
+set(CMAKE_KC_FILES "${KERNEL_C_FILES} ${KENREL_ARCH_C_FILES}")
+
+# checking files
+#   check_if_file_exist(KERNEL_C_FILES)
+#   check_if_file_exist(KERNEL_ARCH_C_FILES)
+
+# setting libc variable
+file(GLOBAL_RECURSE CMAKE_LIBC_FILES "${CRT_DIR}/libc/*.c")
+
+set(CMAKE_EXE_LINKER_FLAGS " -T ${CMAKE_LINKER} -melf_i386")
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
+
+include_directories(
+    ${CRT_DIR}/smkrnl/include
+    ${CRT_DIR}/libc/include)
+
+add_library(kernel.elf OBJECT
+    ${CMAKE_KC_FILES} 
+    ${CMAKE_ASM_FILES})
+
+
