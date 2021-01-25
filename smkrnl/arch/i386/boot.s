@@ -1,8 +1,9 @@
 ; Constants for the multiboot header
 MBALIGN equ 1 << 0            ; align loaded modules on page
-MEMIFNO equ 1 << 1            ; provide memory map
+MEMINFO equ 1 << 1            ; provide memory map
 FLAGS   equ MBALIGN | MEMINFO ; multibootloader 'flag' field
 MAGIC   equ 0x1BADB002
+CHECKSUM equ -(MAGIC + FLAGS)   ; checksum of above, to prove we are multiboot
 
 ; Setting the standards for the multiboot header to mark this
 ; as the kernel.
@@ -15,16 +16,19 @@ align 4
 ; Multiboot standard does not create a stack, so there won't be
 ; esp or anything of the sorts. It's up to the kernel to create 
 ; the stack.
+
+; Size of stack
+; KERNEL_STACK equ 4096
 section .bss
 align 16
 stack_bottom:
-    resb 16384
+   resb 16384
 stack_top:
 
 ; The linker script will specify the entry of the kernel, in our
 ; case that would be _start. 
 section .text
-global _start:function(_start.end - _start)
+global _start:function (_start.end - _start)
 _start:
 	; The bootloader has loaded us into 32-bit protected mode on a x86
 	; machine. Interrupts are disabled. Paging is disabled. The processor
@@ -73,7 +77,8 @@ _start:
 	; 3) Jump to the hlt instruction if it ever wakes up due to a
 	;    non-maskable interrupt occurring or due to system management mode.
 	cli
-.hang:	hlt
+.hang:	
+        hlt
 	jmp .hang
 .end:
 
