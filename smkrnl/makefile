@@ -45,6 +45,15 @@ run: simplekernel.iso
 install:
 	sudo apt install qemu-system-i386 genisoimage 
 
+testing-multi:
+	if [ -e "kernel.elf"  ]; then \
+	    if grub-file --is-x86-multiboot kernel.elf; then \
+  		echo multiboot confirmed; \
+	    else \
+  		echo the file is not multiboot; \
+	    fi; \
+	fi; \
+
 kmain.o: $(KERNEL_ALL_C)
 	$(CC) $(CFLAGS) $(KERNEL_ALL_C) -o kmain.o
 
