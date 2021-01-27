@@ -1,9 +1,13 @@
-include ../makefile.config
+ROOTDIR.CONFIG = ../makefile.config
+ARCH.CONFIG = $(ARCHDIR)makefile.config
+
+include $(ROOTDIR.CONFIG)
+include 
 
 ARCHDIR = arch/i386/
-
-KERNEL_C_ARCH = $(wildcard $(ARCHDIR)*.c)
-KERNEL_ALL_C  = kmain.c # $(KERNEL_C_ARCH)
+KERNEL_INCLUDES = -Iinclude/kernel/
+KERNEL_C_ARCH   = $(wildcard $(ARCHDIR)*.c)
+KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
 
 # linker
 #
@@ -12,15 +16,26 @@ LDFLAGS = -T $(ARCHDIR)linker.ld -melf_i386
 # objects
 #
 KERNEL_ASM_FILES = $(ARCHDIR)boot.s
-KERNEL_OBJECTS = kmain.o boot.o
+KERNEL_OBJECTS =\
+kmain.o \
+$(ARCHDIR)boot.o \
+$(ARCHDIR)vga.o
+
+KERNEL_C_OBJECTS = kmain.o $(ARCHDIR)vga.o
+
+
+.SUFFIXES: .o .c .s
 
 all: kernel.elf
 
-kernel.elf: $(KERNEL_OBJECTS)
+kernel.elf: kmain.o 
 	ld $(LDFLAGS) $(KERNEL_OBJECTS) -o kernel.elf
 
 simplekernel.iso: kernel.elf
 	cp kernel.elf ../isodir/boot/kernel.elf
+	grub-mkrescue -o simplekernel.iso ../isodir/
+
+genisoimage:
 	genisoimage -R				         \
 		    -b grub/stage2_eltorito         \
 		    -no-emul-boot		         \
@@ -54,12 +69,10 @@ testing-multi:
 	    fi; \
 	fi; \
 
-kmain.o: $(KERNEL_ALL_C)
-	$(CC) $(CFLAGS) $(KERNEL_ALL_C) -o kmain.o
-
-boot.o: $(KERNEL_ASM_FILES)
-	$(AS) $(ASFLAGS) $(KERNEL_ASM_FILES) -o boot.o
-
+kmain.o:
+	cd $(ARCHDIR) && make compile-arch
+	$(CC) $(KERNEL_INCLUDES) $(CFLAGS) kmain.c -o kmain.o
+		
 clean:
 	if [ -e "simplekernel.iso"  ]; then \
 	    rm -rf *.iso;             \

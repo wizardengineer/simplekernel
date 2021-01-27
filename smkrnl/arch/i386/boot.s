@@ -41,6 +41,9 @@ _start:
 	; itself. It has absolute and complete power over the
 	; machine.
 
+        ; Jump to the os
+        mov eax, 0xCAFEBABE
+
 	; To set up a stack, we set the esp register to point to the top of our
 	; stack (as it grows downwards on x86 systems). This is necessarily done
 	; in assembly as languages such as C cannot function without a stack.
