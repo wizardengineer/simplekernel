@@ -1,6 +1,9 @@
 #include <kernel/vga.h>
+#include <kernel/tty.h>
 
 void kmain()
 {
-  vga_putchar(0, 'S', VGA_WHITE, VGA_BLACK);
+  terminal_initialize();
+
+  terminal_putchar('S');
 }

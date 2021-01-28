@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-#define FRAMEBUFFER 0x000B8000
+#define FRAMEBUFFER 0xB8000
 
-static unsigned int* const framebuffer_rw = (unsigned int*)FRAMEBUFFER;
+static unsigned int* const FRAMEBUFFER_MEMORY = (unsigned int*)FRAMEBUFFER;
 
 /**
  * Color for console output
@@ -34,23 +34,15 @@ typedef enum vga_colors
   VGA_WHITE
 } vga_colors;
 
-/** 
- * fb_write_cell:
- *  Writes a character with the given foreground and background to position i
- *  in the framebuffer.
- *
- *  @param i  The location in the framebuffer
- *  @param c  The character
- *  @param fg The foreground color
- *  @param bg The background color
- */
 
-static inline uint8_t vga_entry_color(vga_colors fg, vga_colors bg) {
-	return fg << 4 | bg;
+static inline uint8_t vga_entry_color(vga_colors fg, vga_colors bg) 
+{ 
+  return fg | bg << 4; 
 }
  
-static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
-	return (uint16_t) uc | (uint16_t) color << 8;
+static inline uint16_t vga_entry(unsigned char uc, uint8_t color) 
+{
+  return (uint16_t) uc | (uint16_t) color << 8;
 }
 
 #endif
