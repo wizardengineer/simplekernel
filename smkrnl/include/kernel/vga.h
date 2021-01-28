@@ -1,7 +1,9 @@
 #ifndef _KERNEL_VGA_I386
 #define _KERENL_VGA_I386  
 
-#define FRAMEBUFFER 0x000B8010
+#include <stdint.h>
+
+#define FRAMEBUFFER 0x000B8000
 
 static unsigned int* const framebuffer_rw = (unsigned int*)FRAMEBUFFER;
 
@@ -42,7 +44,13 @@ typedef enum vga_colors
  *  @param fg The foreground color
  *  @param bg The background color
  */
-void vga_putchar(int i, char c, vga_colors fg, vga_colors bg);
 
+static inline uint8_t vga_entry_color(vga_colors fg, vga_colors bg) {
+	return fg << 4 | bg;
+}
+ 
+static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
+	return (uint16_t) uc | (uint16_t) color << 8;
+}
 
 #endif

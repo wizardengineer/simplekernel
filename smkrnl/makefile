@@ -2,13 +2,13 @@ ROOTDIR.CONFIG = ../makefile.config
 ARCH.CONFIG = $(ARCHDIR)makefile.config
 
 include $(ROOTDIR.CONFIG)
-include 
 
 ARCHDIR = arch/i386/
-KERNEL_INCLUDES = -Iinclude/kernel/
+KERNEL_INCLUDES = -Iinclude/
 KERNEL_C_ARCH   = $(wildcard $(ARCHDIR)*.c)
 KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
 
+LIBC_INCLUDES = -I../libc/include
 # linker
 #
 LDFLAGS = -T $(ARCHDIR)linker.ld -melf_i386
@@ -71,7 +71,7 @@ testing-multi:
 
 kmain.o:
 	cd $(ARCHDIR) && make compile-arch
-	$(CC) $(KERNEL_INCLUDES) $(CFLAGS) kmain.c -o kmain.o
+	$(CC) $(KERNEL_INCLUDES) $(LIBC_INCLUDES) $(CFLAGS) kmain.c -o kmain.o
 		
 clean:
 	if [ -e "simplekernel.iso"  ]; then \
