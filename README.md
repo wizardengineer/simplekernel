@@ -22,7 +22,7 @@
     * [What is paging](#paging)
 
 ## Modes
-*   <a name="real_mode"> **Real Mode**  </a>
+###   <a name="real_mode"> Real Mode  </a>
 
 
 ## Resource that undeceive my research:
