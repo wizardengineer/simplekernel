@@ -22,7 +22,7 @@
     * [What is paging](#paging)
 
 ## Modes
-*   <a name="real_mode"> **Real Mode**  </a>
+*   <a name="real_mode"> **Real Mode**  </a> <br> In comparsion to other modes, Real Mode is a simple and finite 16-bit mode that is presented in every x86 processors. It was the only mode for proved by early x86 designed CPUs. Until the Intel80{286} Protected mode initially came forth.
 
 
 ## Resource that undeceive my research:
