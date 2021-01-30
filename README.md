@@ -21,8 +21,8 @@
 * Paging
     * [What is paging](#paging)
 
-## <a name="real_mode"> Real Mode </a>
-*   **Real Mode** 
+## Modes
+*   <a name="real_mode"> **Real Mode**  </a>
 
 
 ## Resource that undeceive my research:
