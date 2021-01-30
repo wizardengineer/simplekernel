@@ -1,6 +1,6 @@
 <p align=center>
   <a href="https://fontmeme.com/graffiti-creator/">
-    <img src="https://fontmeme.com/permalink/210130/3120e451fee79d30d37a10f9c9805f16.png" alt="graffiti-creator" border="0">
+    <img src="https://fontmeme.com/permalink/210130/6d99b8c4939c275c2357cddf398cbcd8.png" alt="graffiti-creator" border="0">
   </a>
 </p>
 
@@ -22,7 +22,7 @@
     * [What is paging](#paging)
 
 ## Modes
-###   <a name="real_mode"> Real Mode  </a>
+*   <a name="real_mode"> **Real Mode**  </a>
 
 
 ## Resource that undeceive my research:
