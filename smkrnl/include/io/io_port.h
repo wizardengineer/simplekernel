@@ -6,8 +6,8 @@
 #define DATA_PORT            0x3D5
 
 //  the I/O port commands 
-#define HIGH_BYTE_COMMAND    14
-#define LOW_BYTE_COMMAND     15
+#define HIGH_BYTE_COMMAND   0xE 
+#define LOW_BYTE_COMMAND    0xF
 
 #include <stdint.h>
 

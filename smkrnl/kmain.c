@@ -5,6 +5,14 @@
 void kmain()
 {
   terminal_initialize();
-  terminal_writeS("SimpleKernel");
+  terminal_write("SimpleKernel\n", 13);
+  terminal_write("SimpleKernel\n", 13);
+  terminal_write("SimpleKernel\n", 13);
+terminal_write("SimpleKernel\n", 13);
+terminal_write("Simple kernel\n", 14);
+terminal_write("SimpleKernel\n", 13);
+terminal_write("SimpleKernel\n", 13);
+terminal_write("SimpleKernel\n", 13);
+
   serial_writeS("Testing: SimpleKernel");
 }
