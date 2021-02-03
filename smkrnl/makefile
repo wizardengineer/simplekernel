@@ -1,9 +1,9 @@
 ROOTDIR.CONFIG = ../makefile.config
-ARCH.CONFIG = $(ARCHDIR)makefile.config
 
 include $(ROOTDIR.CONFIG)
 
 ARCHDIR = arch/i386/
+DRIVERS = ../drivers/
 KERNEL_INCLUDES = -Iinclude/
 KERNEL_C_ARCH   = $(wildcard $(ARCHDIR)*.c)
 KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
@@ -13,7 +13,7 @@ KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
 LIBC_INCLUDES = -I../libc/include
 LIBC = ../libc/
 
-LIBC_OBJECTS = $(LIBC)string.o
+LIBC_OBJECTS = $(LIBC)string.o $(LIBC)stdio.o
 
 # linker
 #
@@ -25,9 +25,9 @@ KERNEL_ASM_FILES = $(ARCHDIR)boot.s
 KERNEL_OBJECTS =\
 kmain.o \
 $(ARCHDIR)boot.o \
-$(ARCHDIR)vga.o  \
-$(ARCHDIR)serial_port.o \
-$(ARCHDIR)io_port.o \
+$(DRIVERS)vga.o  \
+$(DRIVERS)serial_port.o \
+$(DRIVERS)io_port.o \
 
 KERNEL_C_OBJECTS = kmain.o $(ARCHDIR)vga.o
 
@@ -77,12 +77,15 @@ testing-multi:
 	    fi; \
 	fi; \
 
-kmain.o:
+kmain.o: drivers-compile
 	cd $(ARCHDIR) && make compile-arch
 	$(CC) $(KERNEL_INCLUDES) $(LIBC_INCLUDES) $(CFLAGS) kmain.c -o kmain.o
 
 libc-compile:
 	cd ../libc/ && make compile-libc
+
+drivers-compile:
+	cd ../drivers/ && make compile-drivers
 		
 clean:
 	if [ -e "simplekernel.iso"  ]; then \
@@ -94,3 +97,4 @@ clean:
 	rm -rf $(ARCHDIR)*.o
 	rm -rf *.elf
 	rm -rf ../isodir/boot/*.elf
+	rm -rf ../drivers/*.o

@@ -3,9 +3,7 @@
 
 #include <stdint.h>
 
-#define FRAMEBUFFER 0xB8000
-
-static unsigned int* const FRAMEBUFFER_MEMORY = (unsigned int*)FRAMEBUFFER;
+#define FRAMEBUFFER_MEMORY ((uint16_t*)0xB8000)
 
 /**
  * Color for console output
