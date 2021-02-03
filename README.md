@@ -32,4 +32,5 @@
 https://wiki.osdev.org/Printing_To_Screen
 https://stackoverflow.com/questions/11277652/what-is-the-meaning-of-align-an-the-start-of-a-section
 https://code.woboq.org/
+http://www.osdever.net/bkerndev/Docs/intro.htm
 ```
