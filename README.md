@@ -3,9 +3,14 @@
     <img src="https://fontmeme.com/permalink/210130/6d99b8c4939c275c2357cddf398cbcd8.png" alt="graffiti-creator" border="0">
   </a>
 </p>
+# Motivation
+This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories and laws on the underlying mysteries of operating systems and kernels. I had presumed, I had a *okay* idea on how OSs worked. However, creating your own OS was absolutely way more definite compared to just reading about, in my own honest opinion. This was a way for me to have a better of software I want to mess with on kernel mode  and user mode.
 
+Thanks to xeroxz for the spark of inspiration on my continuous effort on this project,
+and thanks to IRQL for helping me understand certain concepts within kernel/OS development. =)
 
 # A Table of Contents of Things I've learnt:
+Before we begin, even though the kernel and operating system is 32bit. I will be explaining concepts in 64 bit too, evidently one of them being Long Mode. 
 
 * Modes
     * [Real Mode](#real_mode)
@@ -14,10 +19,16 @@
 
 * Interrupts
     * [What are interrupts](#interrupts)
-    * [The use case of IDT](#idt)
-    * [The importance IRQ](#irq)
+    * [The importance of IRQ and ISA](#irq_isa)
     * [What are exceptions](#exceptions)
-    
+
+* Descriptors
+    * [What exactly is a Table](#table)
+    * [What's a descriptor then](#descriptor)
+    * [Use case of GDT](#gdt)    
+    * [Interrupt Descriptor Table (IDT)](#idt)
+    * [Local Descriptor Table (LDT)](#ldt)
+
 * Paging
     * [What is paging](#paging)
 
@@ -26,6 +37,51 @@
 <br>
 
 *   <a name="protected_mode"> **Protected Mode** </a> <br> 
+<br>
+
+<!-- Things to add
+        *Include definition
+        *How it's loaded/activated and show the use 
+        case of control registers-->
+
+*   <a name="long_mode"> **Long Mode** </a> <br> 
+<br>
+
+## Interrupts
+*   <a name="interrupts"> **What are Interrupts** </a> <br> 
+<br>
+
+*   <a name="irq_isa"> **What are the importance of IRQ and ISA** </a> <br> 
+<br>
+
+<!-- Things to add
+        *Include definition 
+        *Include why it's important
+        *Include how you might have seen this in windows driver-->
+
+*   <a name="exceptions"> **What are exceptions** </a> <br> 
+<br>
+
+## Descriptor
+*   <a name="table"> **What exactly is a Table** </a> <br> 
+<br>
+
+*   <a name="descriptor"> **What's a descriptor then** </a> <br> 
+<br>
+
+*   <a name="gdt"> **Use case of GDT** ** </a> <br> 
+<br>
+
+*   <a name="idt"> **Interrupt Descriptor Table** </a> <br> 
+<br>
+
+*   <a name="ldt"> **Local Descriptor Table**  </a> <br> 
+<br>
+
+
+## Paging
+*   <a name=""> ** </a> <br> 
+<br>
 
 ## Resource that undeceive my research:
 ```
@@ -33,4 +89,9 @@ https://wiki.osdev.org/Printing_To_Screen
 https://stackoverflow.com/questions/11277652/what-is-the-meaning-of-align-an-the-start-of-a-section
 https://code.woboq.org/
 http://www.osdever.net/bkerndev/Docs/intro.htm
+https://k.lse.epita.fr/internals/protected_mode.html
+http://www.osdever.net/tutorials/
+http://www.osdever.net/tutorials/view/the-world-of-protected-mode
+https://en.wikipedia.org/wiki/Control_register#:~:text=in%20x86%20series-,CR0,basic%20operation%20of%20the%20processor.
+https://www.amd.com/system/files/TechDocs/24593.pdf
 ```
