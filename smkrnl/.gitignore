@@ -2,3 +2,5 @@
 *.kernel
 *.elf
 *.o
+*.swp
+*.swo
