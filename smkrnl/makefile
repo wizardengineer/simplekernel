@@ -4,6 +4,7 @@ include $(ROOTDIR.CONFIG)
 
 ARCHDIR = arch/i386/
 DRIVERS = ../drivers/
+DTABLEDIR = descriptor-tables/
 KERNEL_INCLUDES = -Iinclude/
 KERNEL_C_ARCH   = $(wildcard $(ARCHDIR)*.c)
 KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
@@ -21,6 +22,9 @@ LDFLAGS = -T $(ARCHDIR)linker.ld -melf_i386
 
 # kernel objects
 #
+DTABLES = $(DTABLEDIR)gdt.o \
+	 $(DTABLEDIR)gdt_set.o # Descriptor Table Objects
+
 KERNEL_ASM_FILES = $(ARCHDIR)boot.s
 KERNEL_OBJECTS =\
 kmain.o \
@@ -36,8 +40,10 @@ KERNEL_C_OBJECTS = kmain.o $(ARCHDIR)vga.o
 
 all: kernel.elf
 
-kernel.elf: kmain.o libc-compile
-	ld $(LDFLAGS) $(LIBC_OBJECTS) $(KERNEL_OBJECTS) -o kernel.elf
+kernel.elf: kmain.o libc-compile dtables-compile
+	ld $(LDFLAGS) $(LIBC_OBJECTS) \
+	   $(KERNEL_OBJECTS) \
+	   $(DTABLES) -o kernel.elf
 
 simplekernel.iso: kernel.elf
 	cp kernel.elf ../isodir/boot/kernel.elf
@@ -86,7 +92,10 @@ libc-compile:
 
 drivers-compile:
 	cd ../drivers/ && make compile-drivers
-		
+
+dtables-compile:
+	cd descriptor-tables/ && make compile-dtable
+	
 clean:
 	if [ -e "simplekernel.iso"  ]; then \
 	    rm -rf *.iso;             \
@@ -98,3 +107,4 @@ clean:
 	rm -rf *.elf
 	rm -rf ../isodir/boot/*.elf
 	rm -rf ../drivers/*.o
+	rm -rf descriptor-tables/*.o
