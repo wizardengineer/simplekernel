@@ -25,7 +25,7 @@ typedef struct gdt_ptr
 
 void gdt_install();
 
-void gdt_set_entry(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
+void gdt_set_entry(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
 
 // asm function/label
 extern void gdt_flush(uint32_t gdt_t);
