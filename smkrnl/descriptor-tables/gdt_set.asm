@@ -5,20 +5,21 @@ global gdt_flush
 
 section .text
 gdt_flush:
-    push ax
-    lgdt [esp + 4] ; load GDT register with start address of GDT
-    
-    ; in order to set up our segment register CS (Code Segment)
-    ; we need to do a far jump with the selector offest 0x08
-    jmp CODE32:flush
-flush:
+    mov eax, [esp + 4] ; load GDT register with start address of GDT
+    lgdt [eax]
+
     mov ax, DS_OFFSET
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
+    mov ss, ax
+   
+    ; in order to set up our segment register CS (Code Segment)
+    ; we need to do a far jump with the selector offest 0x08
+    jmp CODE32:flush
 
+flush:
     ; restore register
-    pop ax
     retn
 
