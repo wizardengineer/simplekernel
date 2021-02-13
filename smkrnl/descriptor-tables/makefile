@@ -7,7 +7,7 @@ KERNEL_INCLUDE = -I$(KERNELDIR)include
 
 INCLUDE = $(LIBC_INCLUDE) $(KERNEL_INCLUDE) -I.
 
-DTABLE_OBJ = gdt.o gdt_set.o
+DTABLE_OBJ = gdt.o gdt_set.o idt.o idt_set.o
 
 include $(ROOTDIR.CONFIG)
 
