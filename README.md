@@ -8,7 +8,7 @@
 This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories and laws on the underlying mysteries of operating systems and kernels. I had presumed, I had a *okay* idea on how OSs worked. However, creating your own OS was absolutely way more definite compared to just reading about, in my own honest opinion. This was a way for me to have a better of software I want to mess with on kernel mode  and user mode.
 <br>
 Thanks to [xeroxz](https://twitter.com/_xeroxz?lang=en) and [Daax](https://twitter.com/daax_rynd) 
-]for the spark of inspiration on my continuous effort on this project.
+for the spark of inspiration on my continuous effort on this project.
 and Thanks to [Irql0](https://github.com/irql0) for helping me understand certain concepts within kernel/OS development. =)
 <br>
 # A Table of Contents of Things I've learnt:
@@ -21,7 +21,7 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 
 * Interrupts
     * [What are interrupts](#interrupts)
-    * [The importance of IRQ, ISA, and ISR](#irq_isa)
+    * [Importance of IRQ, ISA, and ISR](#irq_isa)
     * [What are exceptions](#exceptions)
 
 * Descriptors
@@ -50,15 +50,31 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 <br>
 
 ## Interrupts
-*   <a name="interrupts"> **What are Interrupts** </a> <br> 
+*   <a name="interrupts"> **What are Interrupts** </a> <br> You can think of Interrupts as being a signal or data that is being sent by a device such as Keyboard, Solid State Drive, Hard Driver, or Mouse and Software that tell's the CPU that an event happened and need to immediately stop what it's currently doing, to proceed to what sent it the interrupt. 
+
+E.g. when you move/click a mouse, the mouse controller will send an interrupt to the Interrupt Controller for the CPU, the CPU attention will immediately go to the mouse interrupt and will proceed to execute a routine (mouse movement or clicking). After the mouse interrupt the CPU will continue doing whatever it was before the interrupt or go manage another interrupt if it has been signal to.
+
+```
+    
+            +------------------------+            +------------+
+            |   TYPES OF INTERRUPTS  |------------| Exceptions |
+            +------------------------+            +------------+
+                   /         \
+                  /           \
+                 /             \ 
+     +------------+           +------------+
+     |  HARDWARE  |           |  SOFTWARE  |
+     | INTERRUPTS |           | INTERRUPTS |
+     +------------+           +------------+
+```
 <br>
 
-*   <a name="irq_isa"> **What are the importance of IRQ, ISA, and ISR** </a> <br> 
+*   <a name="irq_isa"> **Importance of IRQ, ISA, and ISR** </a> <br> 
 <br>
 
 <!-- Things to add
-        *Include definition 
-        *Include why it's important
+        *Include definitions 
+        *Include why they're important
         *Include how you might have seen this in windows driver-->
 
 *   <a name="exceptions"> **What are exceptions** </a> <br> 
@@ -98,10 +114,35 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
         ```
 <br>
 
-*   <a name="table"> **What exactly is a Table and a Descriptor** </a> <br> You can think of Table as being an array and the Descriptor as being the elements in the Table (the array). 
+*   <a name="table"> **What exactly is a Table and a Descriptor** </a> <br> To simply put it, you can think of Table as being an array and the Descriptor as being the elements in the Table (the array). The Selector segment holds the index and iterates through the Table in order to point at a Descriptor. 
 <br>
 
-*   <a name="gdt"> **Use case of GDT** </a> <br>
+*   <a name="gdt"> **Use case of GDT** </a> <br> Being one of the segment descriptor tables, The Global Descriptor Table (GDT) is a protection measure, data structure that uses a heuristic approach in creating sections or segments (aka Segment Descriptors) that are called entries within areas of memory that hold certain characteristics on the privileges that have been assign to that memory region. The characteristics that the entries hold are the start of where it's be in memory, limit which is the size of teh entry, and the access privilege of the entry.
+
+An example of the GDT working with the selector:
+```
+<---- Selector ---->    +----- Segment Selector Register
++-------+----+-----+    v
+| Index | TI | RPL | = DS
++-------+----+-----+            GDT                        LDT
+   |      |             +---------------------+   +---------------------+
+   |      +------------>| Null Descriptor     |   | Null Descriptor     |
+   |                    +---------------------+   +---------------------+
+   |                    | Descriptor 1        |   | Descriptor 1        |
+   |                    +---------------------+   +---------------------+
+   |                    |                     |   |                     |
+   |                    ...     ...    ...   ...  ...     ...    ...   ...
+   |                    |                     |
+   |                    +---------------------+
+   +------------------->| Descriptor K        |
+                        +---------------------+
+                        |                     |
+                        ...     ...    ...   ...
+
+RPL (Request Privilege Level) describes the privilege for accessing the descriptor
+
+```
+
 <br>
 
 *   <a name="idt"> **Interrupt Descriptor Table** </a> <br> 
