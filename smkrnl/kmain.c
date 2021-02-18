@@ -1,5 +1,6 @@
 #include <kernel/vga.h>
 #include <kernel/tty.h>
+#include <kernel/printk.h>
 #include <io/serial_port.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,7 +8,5 @@
 
 void kmain()
 {
-  terminal_initialize();
-  printf("\t\t\t\t\t\t\t\t" "SimpleKernel\n");
-  serial_writeS("Testing: SimpleKernel");
+  printk("Kernel main is running\n");
 }
