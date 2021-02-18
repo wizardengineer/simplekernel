@@ -72,7 +72,19 @@ void terminal_scroll() {
     terminal_column--;
 }
 
+void _simple_banner()
+{
+  terminal_setcolor(vga_entry_color(VGA_L_RED, VGA_WHITE));
+  printk("\t\t\t\t\t\t\t\tSIMPLEKERNEL\n\n");
+  terminal_setcolor(vga_entry_color(VGA_L_GRAY, VGA_WHITE));
+  printk("============================== kernel inits ==============================\n");
 
+}
+
+void _end_banner()
+{
+  printk("==========================================================================\n");
+}
 
 void move_cursor() 
 {

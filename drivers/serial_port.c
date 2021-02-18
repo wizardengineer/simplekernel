@@ -1,5 +1,7 @@
 #include <stddef.h>
 #include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include <io/io_port.h>
 #include <io/serial_port.h>
 
@@ -55,10 +57,11 @@ void write_serial(char a)
   outb(COM1,a);
 }
 
-void serial_writeS(const char* buffer)
+void serial_print(const char* buffer, ...)
 {
   init_serial();
-  for(uint32_t i = 0; i < strlen(buffer); i++) {
-    write_serial(buffer[i]);
-  }
+  va_list parameters;
+  va_start(parameters, buffer);
+  __vsprintf_w(NULL, write_serial, buffer, parameters);
+  va_end(parameters);
 }
