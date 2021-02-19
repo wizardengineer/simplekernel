@@ -6,11 +6,7 @@
 
 # Motivation
 This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories and laws on the underlying mysteries of operating systems and kernels. I had presumed, I had a *okay* idea on how OSs worked. However, creating your own OS was absolutely way more definite compared to just reading about, in my own honest opinion. This was a way for me to have a better of software I want to mess with on kernel mode  and user mode.
-<br>
-Thanks to [xeroxz](https://twitter.com/_xeroxz?lang=en) and [Daax](https://twitter.com/daax_rynd) 
-for the spark of inspiration on my continuous effort on this project.
-and Thanks to [Irql0](https://github.com/irql0) for helping me understand certain concepts within kernel/OS development. =)
-<br>
+
 # A Table of Contents of Things I've learnt:
 Before we begin, even though the kernel and operating system is 32bit. I will be explaining concepts in 64 bit too, evidently one of them being Long Mode. 
 
@@ -21,7 +17,9 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 
 * Interrupts
     * [What are interrupts](#interrupts)
-    * [Importance of IRQ, ISA, and ISR](#irq_isa)
+    * [Interrupt Request (IRQ)](#irq)
+    * [Interrupt Stack Table (IST)](#ist)
+    * [Interrupt Service Routine (ISR)](#isr)
     * [What are exceptions](#exceptions)
 
 * Descriptors
@@ -69,7 +67,7 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
 ```
 <br>
 
-*   <a name="irq_isa"> **Importance of IRQ, ISA, and ISR** </a> <br> 
+*   <a name="irq_ist"> **Importance of IRQ IST and ISR** </a> <br> 
 <br>
 
 <!-- Things to add
@@ -119,7 +117,7 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
 
 *   <a name="gdt"> **Use case of GDT** </a> <br> Being one of the segment descriptor tables, The Global Descriptor Table (GDT) is a protection measure, data structure that uses a heuristic approach in creating sections or segments (aka Segment Descriptors) that are called entries within areas of memory that hold certain characteristics on the privileges that have been assign to that memory region. The characteristics that the entries hold are the start of where it's be in memory, limit which is the size of teh entry, and the access privilege of the entry.
 
-An example of the GDT working with the selector:
+GDT is 1:1 with Logical Address, An example of the GDT working with the selector:
 ```
 <---- Selector ---->    +----- Segment Selector Register
 +-------+----+-----+    v
@@ -143,6 +141,39 @@ RPL (Request Privilege Level) describes the privilege for accessing the descript
 
 ```
 
+We store the all the GDT base (address) and limit (size of our GDT) in the GDTR. The GDTR points to all our GDT Entries in memory, starting from the base. After that, it's then loaded with the [``lgdt``]() mnemonic:
+```cpp
+typedef struct gdt_descriptor
+{
+    union
+    {
+        uint64_t limit_low : 16;
+        uint64_t base_low  : 16;
+        uint64_t base_mid  : 8;
+        uint64_t access    : 8;
+        uint64_t gran      : 8;
+        uint64_t base_high : 8;
+    } 
+} __attribute__((packed)) gdt_descr;
+
+gdt_descr gdt_entrys[256];
+
+/* The GDTR (GDT Register) */
+struct gdtr
+{
+    uint16_t limit;
+    uint32_t base;
+} __attribute__((packed)) gdtr;
+
+...
+
+gdtr.base = &gdt_entrys;
+gdtr.limit = (sizeof(gdt_descr) * 256) - 1)
+
+```
+
+Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](https://www.amd.com/system/files/TechDocs/24593.pdf), Section 4.7 (pg. 84 - 90)
+
 <br>
 
 *   <a name="idt"> **Interrupt Descriptor Table** </a> <br> 
@@ -155,6 +186,16 @@ RPL (Request Privilege Level) describes the privilege for accessing the descript
 ## Paging
 *   <a name=""> ** </a> <br> 
 <br>
+
+## Thanks for the help:
+<br>
+Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en), [Daax](https://twitter.com/daax_rynd) and [Irql0](https://github.com/irql0) for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
+
+**Honorable fam mentions**:
+Some [LLE](https://discord.gg/MvtdVcUsJs) members
+[Red Vice](https://discord.gg/azxCJbh) members such as Chc4 and Internal
+<br>
+
 
 ## Resource that undeceive my research:
 ```
