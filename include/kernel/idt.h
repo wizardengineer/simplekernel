@@ -1,14 +1,18 @@
 #ifndef _IDT_HEADER
 #define _IDT_HEADER
 
-#define IDT_ENTRY_NUM 256
+#define IDT_ENTRY_NUM      256
 
 #define IDT_FIRST_32_GATES 32 // Exceptions
 
 #include <stdint.h>
 #include <string.h>
+#include <kernel/printk.h>
 
-// Entrys
+typedef __attribute__((interrupt)) __interrupt;
+typedef __attribute__((interrupt(IRQ))) __interrupt_irq;
+
+/* Entrys */
 typedef struct idt_entry
 {
   uint16_t base_low;
@@ -18,7 +22,7 @@ typedef struct idt_entry
   uint16_t base_high;
 } __attribute((packed)) idt_entry_t;
 
-// Pointer to entry
+/* Pointer to entry */
 typedef struct idt_ptr
 {
   uint16_t limit;
@@ -32,7 +36,7 @@ void idt_set_gate(uint8_t num,
 
 void idt_install();
 
-// Extern asm function
+/* Extern asm function */
 extern void idt_flush();
 
 #endif

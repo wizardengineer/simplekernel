@@ -2,6 +2,7 @@
 #include <kernel/idt.h>
 #include <io/serial_port.h>
 
+/* AMD manual Exceptions and Interrupts */
 const char *exception_messages[IDT_FIRST_32_GATES] =
 {
   "Division By Zero Exception",
@@ -23,18 +24,18 @@ const char *exception_messages[IDT_FIRST_32_GATES] =
   "Coprocessor Fault Exception",
   "Alignment Check Exception (486+)",
   "Machine Check Exception (Pentium/586+)",
+  "SIMD Floating-Point", // 19
+  "Reserved Exceptions",
+  "Control-Protection Exception",
   "Reserved Exceptions",
   "Reserved Exceptions",
   "Reserved Exceptions",
   "Reserved Exceptions",
   "Reserved Exceptions",
   "Reserved Exceptions",
-  "Reserved Exceptions",
-  "Reserved Exceptions",
-  "Reserved Exceptions",
-  "Reserved Exceptions",
-  "Reserved Exceptions",
-  "Reserved Exceptions",
+  "Hypervisor Injection Exception",
+  "VMM Communication Exception",
+  "Security Exception",
   "Reserved Exceptions"
 };
 
