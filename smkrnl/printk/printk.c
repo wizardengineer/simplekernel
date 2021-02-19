@@ -1,6 +1,6 @@
 #define pr_fmt(fmt) "%s: " fmt, __func__
 
-#if defined(KERNEL_MOD)
+#if defined(__KERNEL_MOD)
   #include <kernel/tty.h>
   #include <kernel/vga.h>
   #include <kernel/kern_levels.h>
@@ -14,7 +14,7 @@
 
 void printk(const char* restrict format, ...)
 {
-#if defined(KERNEL_MOD)
+#if defined(__KERNEL_MOD)
   va_list parameters;
   va_start(parameters, format);
   __vsprintf_w(NULL, terminal_putchar, format, parameters);
