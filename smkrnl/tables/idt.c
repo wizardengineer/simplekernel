@@ -1,6 +1,7 @@
 #include <kernel/idt.h>
 #include <kernel/isr.h>
 #include <kernel/printk.h>
+#include <kernel/pic_8259.h>
 #include <string.h>
 
 idt_ptr_t idtr;
@@ -32,7 +33,9 @@ void idt_install()
 #if defined(__KERN_DEBUG)
   serial_print(KERN_DEBUG "IDT starting\n");
 #endif
-  
+  pic_install(); /* Init PIC Master and Slave Convention */
+  printk(KERN_INFO "Kernel had remapped PIC started at address -> %x\n", &pic_remap);
+
   printk(KERN_INFO "Kernel IDT started the loading at address -> %x\n", &idt_install);
   // Setting up the ISRs
   idt_set_gate(0, (unsigned)isr0, 0x08, 0x8E);
@@ -67,6 +70,25 @@ void idt_install()
   idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
   idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
   idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
+
+  /* Hardware Interrupts */
+  idt_set_gate(32, (unsigned)irq0, 0x08, 0x8E);
+  idt_set_gate(33, (unsigned)irq1, 0x08, 0x8E);
+  idt_set_gate(34, (unsigned)irq2, 0x08, 0x8E);
+  idt_set_gate(35, (unsigned)irq3, 0x08, 0x8E);
+  idt_set_gate(36, (unsigned)irq4, 0x08, 0x8E);
+  idt_set_gate(37, (unsigned)irq5, 0x08, 0x8E);
+  idt_set_gate(38, (unsigned)irq6, 0x08, 0x8E);
+  idt_set_gate(39, (unsigned)irq7, 0x08, 0x8E);
+  idt_set_gate(40, (unsigned)irq8, 0x08, 0x8E);
+  idt_set_gate(41, (unsigned)irq9, 0x08, 0x8E);
+  idt_set_gate(42, (unsigned)irq10, 0x08, 0x8E);
+  idt_set_gate(43, (unsigned)irq11, 0x08, 0x8E);
+  idt_set_gate(44, (unsigned)irq12, 0x08, 0x8E);
+  idt_set_gate(45, (unsigned)irq13, 0x08, 0x8E);
+  idt_set_gate(46, (unsigned)irq14, 0x08, 0x8E);
+  idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
+
 
 #if defined(__KERN_DEBUG)
   serial_print("Finish loading all 32 Exceptions in IDT entries\n");
