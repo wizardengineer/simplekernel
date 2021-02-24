@@ -16,6 +16,7 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
     * [Long Mode](#long_mode)
 
 * Interrupts
+    * [APIC and PIC](#apic_pic)
     * [What are interrupts](#interrupts)
     * [Interrupt Request (IRQ)](#irq)
     * [Interrupt Stack Table (IST)](#ist)
@@ -27,7 +28,6 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
     * [What exactly is a Table and a Descriptor](#table)
     * [Use case of GDT](#gdt)    
     * [Interrupt Descriptor Table (IDT)](#idt)
-    * [Local Descriptor Table (LDT)](#ldt)
 
 * Paging
     * [What is paging](#paging)
@@ -48,6 +48,9 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 <br>
 
 ## Interrupts
+*   <a name="apic_pic"> **APIC and PIC** </a> <br> I won't be explaining it as of yet...However do read the [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 10](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
+<br>
+
 *   <a name="interrupts"> **What are Interrupts** </a> <br> You can think of Interrupts as being a signal or data that is being sent by a device such as Keyboard, Solid State Drive, Hard Driver, or Mouse and Software that tell's the CPU that an event happened and need to immediately stop what it's currently doing, to proceed to what sent it the interrupt. 
 
 E.g. when you move/click a mouse, the mouse controller will send an interrupt to the Interrupt Controller for the CPU, the CPU attention will immediately go to the mouse interrupt and will proceed to execute a routine (mouse movement or clicking). After the mouse interrupt the CPU will continue doing whatever it was before the interrupt or go manage another interrupt if it has been signal to.
@@ -67,8 +70,15 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
 ```
 <br>
 
-*   <a name="irq_ist"> **Importance of IRQ IST and ISR** </a> <br> 
+*   <a name="irq"> **Interrupt Request (IQR)** </a> <br> Interrupt Request (IRQ) or Hardware Interrupts, through the course of simplekernel, I've only set 16 ISR for 16 IRQ (0-15).
 <br>
+
+*   <a name="ist"> **Interrupt Stack Table (IST)** </a> <br> 
+<br>
+
+*   <a name="isr"> **Interrupt Service Request (ISR)** </a> <br> ISR are routines that save the current state of a processor and the set up the approriate registers and segment registers needed for the kernel mode before the C level interrupt handler is called.
+<br>
+
 
 <!-- Things to add
         *Include definitions 
@@ -143,20 +153,22 @@ RPL (Request Privilege Level) describes the privilege for accessing the descript
 
 We store the all the GDT base (address) and limit (size of our GDT) in the GDTR. The GDTR points to all our GDT Entries in memory, starting from the base. After that, it's then loaded with the [``lgdt``]() mnemonic:
 ```cpp
-typedef struct gdt_descriptor
+typedef union _gdt_descriptor
 {
-    union
-    {
-        uint64_t limit_low : 16;
-        uint64_t base_low  : 16;
-        uint64_t base_mid  : 8;
-        uint64_t access    : 8;
-        uint64_t gran      : 8;
-        uint64_t base_high : 8;
-    } 
-} __attribute__((packed)) gdt_descr;
+  struct
+  {
+    uint64_t limit_low    : 16;
+    uint64_t base_low     : 16;
+    uint64_t base_middle  : 8;
+    uint64_t access       : 8;
+    uint64_t granularity  : 8;
+    uint64_t base_high    : 8;
+  };
+} __attribute__((packed)) gdt_entry_t;
 
-gdt_descr gdt_entrys[256];
+
+
+gdt_entry_t gdt_entrys[256];
 
 /* The GDTR (GDT Register) */
 struct gdtr
@@ -179,9 +191,6 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 *   <a name="idt"> **Interrupt Descriptor Table** </a> <br> 
 <br>
 
-*   <a name="ldt"> **Local Descriptor Table**  </a> <br> 
-<br>
-
 
 ## Paging
 *   <a name=""> ** </a> <br> 
@@ -189,10 +198,15 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 
 ## Thanks for the help:
 <br>
-Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en), [Daax](https://twitter.com/daax_rynd) and [Irql0](https://github.com/irql0) for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
+Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd) and 
+[Irql0](https://github.com/irql0) for the spark of inspiration on my continuous effort on this project and for 
+helping me understand certain concepts within kernel/OS development. =)
 
-**Honorable fam mentions**:
+<br>
+
+**Honorable fam mentions**: <br>
 Some [LLE](https://discord.gg/MvtdVcUsJs) members
+
 [Red Vice](https://discord.gg/azxCJbh) members such as Chc4 and Internal
 <br>
 
