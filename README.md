@@ -48,12 +48,13 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 <br>
 
 ## Interrupts
-*   <a name="apic_pic"> **APIC and PIC** </a> <br> I won't be explaining it as of yet...However do read the [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 10](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
+*   <a name="apic_pic"> **APIC and PIC** </a> <br> Essentaily, these chips or Interrupt Controllers are within systems that helps make computers Interrupt driven. For every interrupt that get signals, the {A}PICs chips will in a orderly matter send those interrupts to the CPU. PIC has been replace with APIC. I won't be doing much explaining on these chips consider that it's more extensive than the mere explanation I've provided...However do read the computer Bible on APIC: [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 10](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf) >=}
+
 <br>
 
 *   <a name="interrupts"> **What are Interrupts** </a> <br> You can think of Interrupts as being a signal or data that is being sent by a device such as Keyboard, Solid State Drive, Hard Driver, or Mouse and Software that tell's the CPU that an event happened and need to immediately stop what it's currently doing, to proceed to what sent it the interrupt. 
 
-E.g. when you move/click a mouse, the mouse controller will send an interrupt to the Interrupt Controller for the CPU, the CPU attention will immediately go to the mouse interrupt and will proceed to execute a routine (mouse movement or clicking). After the mouse interrupt the CPU will continue doing whatever it was before the interrupt or go manage another interrupt if it has been signal to.
+    E.g. when you move/click a mouse, the mouse controller will send an interrupt to the Interrupt Controller for the CPU, the CPU attention will immediately go to the mouse interrupt and will proceed to execute a routine (mouse movement or clicking). After the mouse interrupt the CPU will continue doing whatever it was before the interrupt or go manage another interrupt if it has been signal to.
 
 ```
     
@@ -70,7 +71,7 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
 ```
 <br>
 
-*   <a name="irq"> **Interrupt Request (IQR)** </a> <br> Interrupt Request (IRQ) or Hardware Interrupts, through the course of simplekernel, I've only set 16 ISR for 16 IRQ (0-15).
+*   <a name="irq"> **Interrupt Request (IQR)** </a> <br> Interrupt Request (IRQ) or Hardware Interrupts, these type of interrupts are yield externally by the chipset that correspond to the Hardware. Through the course of simplekernel, I've only set up 16 ISR for 16 IRQ (0-15).
 <br>
 
 *   <a name="ist"> **Interrupt Stack Table (IST)** </a> <br> 
@@ -85,14 +86,13 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
         *Include why they're important
         *Include how you might have seen this in windows driver-->
 
-*   <a name="exceptions"> **What are exceptions** </a> <br> 
+*   <a name="exceptions"> **What are exceptions** </a> <br> Exceptions are a type of interrupt. These interrupts are generated interally by the CPU. Exceptions are yield by an unexpected event within the CPU.
 <br>
 
 ## Descriptor
 *   <a name="keywords"> **Keywords** </a>
     * **Entry -** The Entry defines a region in memory where to start, along with the limit of region and the access privileges associated with the entry. Access privilege as in telling processor if the OS is running in System (ring 0) or Application (ring 3). It prevents applications or usermode from having access to certain registers/operands and mnemonics. Such as CR registers and cli/sti respectively.
-    * **Limit -** The size of the Segment
-    Descriptor
+    * **Limit -** The size of the Segment Descriptor
     * **Segment Selector -** They're registers that hold the index of the [Descriptors](#table)
 
         * to be more explicit, An *index* is not a *selector*
@@ -122,12 +122,13 @@ E.g. when you move/click a mouse, the mouse controller will send an interrupt to
         ```
 <br>
 
-*   <a name="table"> **What exactly is a Table and a Descriptor** </a> <br> To simply put it, you can think of Table as being an array and the Descriptor as being the elements in the Table (the array). The Selector segment holds the index and iterates through the Table in order to point at a Descriptor. 
+*   <a name="table"> **What exactly is a Table and a Descriptor** </a> <br> To simply put it, Descriptor Tables are data structures. You can think of Table as being an array and the Descriptor as being the elements in the Table (the array). The Selector segment holds the index and iterates through the Table in order to point at a Descriptor. 
 <br>
 
 *   <a name="gdt"> **Use case of GDT** </a> <br> Being one of the segment descriptor tables, The Global Descriptor Table (GDT) is a protection measure, data structure that uses a heuristic approach in creating sections or segments (aka Segment Descriptors) that are called entries within areas of memory that hold certain characteristics on the privileges that have been assign to that memory region. The characteristics that the entries hold are the start of where it's be in memory, limit which is the size of teh entry, and the access privilege of the entry.
 
 GDT is 1:1 with Logical Address, An example of the GDT working with the selector:
+
 ```
 <---- Selector ---->    +----- Segment Selector Register
 +-------+----+-----+    v
@@ -151,7 +152,7 @@ RPL (Request Privilege Level) describes the privilege for accessing the descript
 
 ```
 
-We store the all the GDT base (address) and limit (size of our GDT) in the GDTR. The GDTR points to all our GDT Entries in memory, starting from the base. After that, it's then loaded with the [``lgdt``]() mnemonic:
+We store the all the GDT base (address) and limit (size of our GDT) in the GDTR. The GDTR points to all our GDT Entries in memory, starting from the base. After that, it's then loaded with the [``lgdt``](https://docs.oracle.com/cd/E19455-01/806-3773/instructionset-82/index.html#:~:text=lgdt%20or%20lidt%2C%20when%20used,directly%20in%2080386%20Protected%20Mode.) mnemonic:
 ```cpp
 typedef union _gdt_descriptor
 {
@@ -184,30 +185,32 @@ gdtr.limit = (sizeof(gdt_descr) * 256) - 1)
 
 ```
 
-Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](https://www.amd.com/system/files/TechDocs/24593.pdf), Section 4.7 (pg. 84 - 90)
+Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](https://www.amd.com/system/files/TechDocs/24593.pdf), Section 4.7 (pg. 84 - 90{+})
 
 <br>
 
-*   <a name="idt"> **Interrupt Descriptor Table** </a> <br> 
+*   <a name="idt"> **Interrupt Descriptor Table (IDT)** </a> <br> Interrupt Descriptor Tables (IDT) are close to being the same as Global Descriptor Tables except that the [Descriptor format](#table) for the IDT has no [limits](#keywords). The IDT holds entries or gates for the ISR of every Interrupt.
 <br>
 
 
 ## Paging
+*   <a name="paging"> **What is Paging** </a> <br> 
+<br>
+
 *   <a name=""> ** </a> <br> 
 <br>
 
 ## Thanks for the help:
 <br>
-Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd) and 
-[Irql0](https://github.com/irql0) for the spark of inspiration on my continuous effort on this project and for 
-helping me understand certain concepts within kernel/OS development. =)
+Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd), 
+[Irql0](https://github.com/irql0) and Dinero {born anew} for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
 
 <br>
 
 **Honorable fam mentions**: <br>
 Some [LLE](https://discord.gg/MvtdVcUsJs) members
 
-[Red Vice](https://discord.gg/azxCJbh) members such as Chc4 and Internal
+[Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
 <br>
 
 
