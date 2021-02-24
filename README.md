@@ -123,6 +123,12 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
         +--------------------------------------------------+----+--------+
 
         TI = Table Indicator: 0 = GDT, 1 = LDT
+        
+        The TI specify if the Descriptor were dealing with is a GDT or LDT
+        IF(TI == 0) THEN
+            ... THE DESCRIPTOR IS A GDT
+        ELSEIF(TI == 1) THEN
+            ... THE DESCRIPTOR IS A LDT
         ```
 <br>
 
@@ -193,7 +199,7 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 
 <br>
 
-*   <a name="idt"> **Interrupt Descriptor Table (IDT)** </a> <br> Interrupt Descriptor Tables (IDT) are close to being the same as Global Descriptor Tables except that the [Descriptor format](#table) for the IDT has no [limits](#keywords). The IDT holds entries or gates for the ISR of every Interrupt.
+*   <a name="idt"> **Interrupt Descriptor Table (IDT)** </a> <br> Interrupt Descriptor Tables are close to being the same as Global Descriptor Tables except that the [Descriptor format](#table) for the IDT has no [limits](#keywords). The IDT holds entries or gates for the ISR of every Interrupt.
 <br>
 
 
@@ -207,7 +213,7 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 ## Thanks for the help:
 <br>
 Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd), 
-[Irql0](https://github.com/irql0) and Dinero {born anew} for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
+[Irql0](https://github.com/irql0) and Dinero{born anew} for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
 
 <br>
 
