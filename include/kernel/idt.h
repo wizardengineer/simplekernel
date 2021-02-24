@@ -9,9 +9,6 @@
 #include <string.h>
 #include <kernel/printk.h>
 
-typedef __attribute__((interrupt)) __interrupt;
-typedef __attribute__((interrupt(IRQ))) __interrupt_irq;
-
 /* Entrys */
 typedef struct idt_entry
 {
