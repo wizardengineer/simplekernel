@@ -1,12 +1,16 @@
 /* The convention of our simplekernel PICs */
+#ifndef __PIC_8259_HEADER_
+#define __PIC_8259_HEADER_
 
 #define PIC1            0x20          /* Master PIC IO base address*/
 #define PIC2            0xA0          /* Slave PIC IO base address*/
 #define PIC1_COMMAND    PIC1
 #define PIC1_DATA       (PIC1+1)
 #define PIC2_COMMAND    PIC2
-#define PIC2_DATA       (PIC+1)
+#define PIC2_DATA       (PIC2+1)
 
+#define PIC1_VEC_OFFSET 0x20
+#define PIC2_VEC_OFFSET 0x28
 
 #define PIC_EOI         0x20          /* End-of-Interrupt command code */
 
@@ -37,3 +41,6 @@ void pic_remap(int32_t offset1, int32_t offset2);
 void pic_send_eoi(uint8_t irq);
 void irq_set_mask(uint8_t irq_line);
 void irq_clear_mask(uint8_t irq_line);
+void pic_install();                   /* Initiate the PICs configs */
+
+#endif
