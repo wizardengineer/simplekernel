@@ -1,9 +1,14 @@
+#ifndef __ISR_HEADER_
+#define __ISR_HEADER_
+
 #include <stdint.h>
-#include <kernel/idt.h>
 #include <stdio.h>
 #include <string.h>
 #include <io/serial_port.h>
 #include <kernel/printk.h>
+#include <kernel/pic_8259.h>
+#include <kernel/idt.h>
+
 
 typedef struct registers
 {
@@ -14,6 +19,15 @@ typedef struct registers
 } __attribute((packed)) regs, *p_regs;
 
 const char *exception_messages[IDT_FIRST_32_GATES];
+
+/* IRQ custom handler */
+typedef void(*irq_handlers)(regs r);
+
+void irq_interrupt_handler(regs r);
+
+void irq_install_handler(uint8_t irq_line, irq_handlers handler);
+
+void irq_uninstall_handler(uint8_t irq_line);
 
 /* Fault handler */
 void fault_handler(regs registers);
@@ -69,3 +83,5 @@ extern void irq12();
 extern void irq13();
 extern void irq14();
 extern void irq15();
+
+#endif
