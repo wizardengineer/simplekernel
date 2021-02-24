@@ -7,21 +7,64 @@
 #include <stdint.h>
 #include <stddef.h>
 
-typedef struct gdt_entry
+typedef union _gdt_descriptor
 {
-  uint16_t limit_low;
-  uint16_t base_low;
-  uint8_t  base_middle;
-  uint8_t  access;
-  uint8_t  granularity;
-  uint8_t  base_high;
+  struct
+  {
+    uint64_t limit_low    : 16;
+    uint64_t base_low     : 16;
+    uint64_t base_middle  : 8;
+    uint64_t access       : 8;
+    uint64_t granularity  : 8;
+    uint64_t base_high    : 8;
+  };
 } __attribute__((packed)) gdt_entry_t;
 
-typedef struct gdt_ptr
+typedef struct _gdt_ptr
 {
   uint16_t limit;
   uint32_t base;
 } __attribute__((packed)) gdt_ptr_t;
+
+typedef struct _tss_segment_fmt
+{
+  uint32_t link       : 16;
+  uint32_t reserved_1 : 16;
+  uint32_t esp_0      : 32;
+  uint32_t ss_0       : 16;
+  uint32_t reserved_2 : 16;
+  uint32_t esp_1      : 32;
+  uint32_t ss_1       : 16;
+  uint32_t reserved_3 : 16;
+  uint32_t esp2       : 32;
+  uint32_t ss_2       : 16;
+  uint32_t reserved_4 : 16;
+  uint32_t eip        : 32;
+  uint32_t eflags     : 32;
+  uint32_t eax        : 32;
+  uint32_t ecx        : 32;
+  uint32_t edx        : 32;
+  uint32_t ebx        : 32;
+  uint32_t esp        : 32;
+  uint32_t esi        : 32;
+  uint32_t edi        : 32;
+  uint32_t es         : 16;
+  uint32_t reserved_5 : 16;
+  uint32_t cs         : 16;
+  uint32_t reserved_6 : 16;
+  uint32_t ss         : 16;
+  uint32_t reserved_7 : 16;
+  uint32_t ds         : 16;
+  uint32_t reserved_8 : 16;
+  uint32_t fs         : 16;
+  uint32_t reserved_9 : 16;
+  uint32_t gs         : 16;
+  uint32_t reserved_10: 16;
+  uint32_t ldtr       : 16;
+  uint32_t reserved_11: 16;
+  uint32_t reserver_12: 16;
+  uint32_t iopb_offset: 16;
+} __attribute__((packed)) tss_segment;
 
 void gdt_install();
 
