@@ -5,7 +5,16 @@
 </p>
 
 # Motivation
-This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories and laws on the underlying mysteries of operating systems and kernels. I had presumed, I had a *okay* idea on how OSs worked. However, creating your own OS was absolutely way more definite compared to just reading about, in my own honest opinion. This was a way for me to have a better of software I want to mess with on kernel mode  and user mode.
+This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories/laws on the underlying mysteries of operating systems and kernels. I had presumed, I had an *okay* idea on how OSs worked. However, creating my own OS was absolutely way more definite compared to just reading about. In my own, honest opinion. This was a way for me to have a better understanding of software I would want to mess with on kernel mode and user mode.
+
+# Resource I relied on:
+   * [Intel Manual](https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html)
+   * [AMD manual](https://www.amd.com/system/files/TechDocs/24593.pdf)
+   * [Reading the Linux Kernel](https://github.com/torvalds/linux/)
+   * [Wiki.osdev](https://wiki.osdev.org/)
+   * [Shichao Notes](https://notes.shichao.io/utlk/ch2/)
+   * [irql0 carbonOS](https://github.com/irql0/carbon)
+   * [OSDever](http://www.osdever.net/bkerndev/Docs/intro.htm)
 
 # A Table of Contents of Things I've learnt:
 Before we begin, even though the kernel and operating system is 32bit. I will be explaining concepts in 64 bit too, evidently one of them being Long Mode. 
@@ -211,19 +220,16 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 <br>
 
 ## Thanks for the help:
-<br>
-Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd), 
-[Irql0](https://github.com/irql0) and Dinero{born anew} for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
-
+Thanks to the fams, [xeroxz](https://twitter.com/_xeroxz?lang=en), [Daax](https://twitter.com/daax_rynd), [Irql0](https://github.com/irql0) and Dinero {born anew} for the spark of inspiration/support on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
 <br>
 
-**Honorable fam mentions**: <br>
-Some [LLE](https://discord.gg/MvtdVcUsJs) members
+   **Honorable fam mentions**: <br>
+   Some [LLE](https://discord.gg/MvtdVcUsJs) members
 
-[Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
-<br>
+   [Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
+   <br>
 
-
+<!--
 ## Resource that undeceive my research:
 ```
 https://wiki.osdev.org/Printing_To_Screen
@@ -239,3 +245,4 @@ https://www.amd.com/system/files/TechDocs/24593.pdf
 For understanding descriptor tables:
 https://en.wikipedia.org/wiki/Global_Descriptor_Table
 ```
+-->
