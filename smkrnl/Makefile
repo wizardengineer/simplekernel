@@ -30,8 +30,11 @@ DTABLES = \
 	 $(DTABLEDIR)idt_set.o
 
 INTERPS = \
-	 $(INTERPDIR)exception.o    \
-	 $(INTERPDIR)exception_set.o\
+	 $(INTERPDIR)exception.o     \
+	 $(INTERPDIR)exception_set.o \
+	 $(INTERPDIR)irqs.o	     \
+	 $(INTERPDIR)irqs_set.o	     \
+	 $(INTERPDIR)pic.o     	     \
 
 KERNEL_OBJECTS = \
 	 kmain.o                 \
@@ -97,7 +100,7 @@ run: simplekernel.iso
 		-vga std
 
 install:
-	sudo apt install qemu-system-i386 genisoimage 
+	sudo apt install qemu-system-i386 genisoimage grub-mkrescue -y 
 
 testing-multi:
 	if [ -e "kernel.elf"  ]; then \
