@@ -219,15 +219,15 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 *   <a name=""> ** </a> <br> 
 <br>
 
-## Credit - Special Thanks to the fams:
+## Credit - Special Thanks to the OGs:
+  for the spark of inspiration/support on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
   * [xeroxz](https://twitter.com/_xeroxz?lang=en) 
   * [Daax](https://twitter.com/daax_rynd)
   * [Irql0](https://github.com/irql0) 
   * Dinero {born anew} 
-  for the spark of inspiration/support on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
 <br>
 
-   *  **Honorable fams mentions**: <br>
+   *  **Honorable fam mentions**: <br>
    [LLE](https://discord.gg/MvtdVcUsJs) members <br>
    [Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
    <br>
