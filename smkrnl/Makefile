@@ -2,10 +2,11 @@ ROOTDIR.CONFIG = ../makefile.config
 
 include $(ROOTDIR.CONFIG)
 
-ARCHDIR = arch/i386/
-DRIVERS = ../drivers/
+ARCHDIR   = arch/i386/
+DRIVERS   = ../drivers/
 DTABLEDIR = tables/
 INTERPDIR = intps/
+TIMEDIR   = time/
 KERNEL_INCLUDES   = -I../include
 KERNEL_C_ARCH     = $(wildcard $(ARCHDIR)*.c)
 KERNEL_C_FILES    = kmain.c $(KERNEL_C_ARCH)
@@ -24,7 +25,7 @@ LDFLAGS = -T $(ARCHDIR)linker.ld -melf_i386
 # kernel objects
 #
 DTABLES = \
-	$(DTABLEDIR)gdt.o        \
+	 $(DTABLEDIR)gdt.o       \
 	 $(DTABLEDIR)gdt_set.o   \
 	 $(DTABLEDIR)idt.o       \
 	 $(DTABLEDIR)idt_set.o
@@ -42,9 +43,13 @@ KERNEL_OBJECTS = \
 	 $(DRIVERS)vga.o         \
 	 $(DRIVERS)serial_port.o \
 	 $(DRIVERS)io_port.o     \
+	 $(DRIVERS)keyboard.o
 
 PRINTK_OBJECTS = \
 	 $(PRINTK)printk.o
+
+TIME_OBJECTS = \
+	 $(TIMEDIR)i8254.o
 
 #-------------------------------------------------------------------------
 # Simple debug handler
@@ -67,7 +72,8 @@ all: kernel.elf
 kernel.elf: kmain.o libc-compile dtables-compile
 	ld $(LDFLAGS) $(LIBC_OBJECTS) \
 	   $(KERNEL_OBJECTS) \
-	   $(DTABLES) $(INTERPS) $(PRINTK_OBJECTS) -o kernel.elf
+	   $(DTABLES) $(INTERPS) $(PRINTK_OBJECTS) \
+	   $(TIME_OBJECTS) -o kernel.elf
 
 simplekernel.iso: kernel.elf
 	cp kernel.elf ../isodir/boot/kernel.elf
@@ -111,12 +117,17 @@ testing-multi:
 	    fi; \
 	fi; \
 
-kmain.o: drivers-compile printk-compile
+kmain.o: drivers-compile printk-compile timer-compile
 	(cd $(ARCHDIR) && make compile-arch);
 	$(CC) $(CFLAGS) kmain.c -o kmain.o
 
 $(PRINTK)/%.o: %.c
 	$(CC) $(CFLAGS) $< -o $@ 
+
+timer-compile: $(TIME_OBJECTS)  # Used to temporarly test a rule
+
+$(TIMEDIR)/%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
 
 printk-compile: $(PRINTK_OBJECTS)
 
@@ -143,3 +154,4 @@ clean:
 	rm -rf tables/*.o
 	rm -rf intps/*.o
 	rm -rf printk/*.o
+	rm -rf time/*.o
