@@ -220,9 +220,11 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 *   <a name="paging"> **What is Paging** </a> <br> This was by far the most fun I had, I was extremely excited once I understood it. 
 <br>
 
-*   <a name="Page Modes and Control Bits"> ** </a> <br>
-> Paging behavior is controlled by the following control bits:
+*   <a name="Page Modes and Control Bits"> **Page Modes and Control Bits** </a> <br>
+Paging behavior is controlled by the following control bits:
+
 > •     The WP and PG flags in control register CR0 (bit 16 and bit 31, respectively).
+
 > •     The PSE, PAE, PGE, PCIDE, SMEP, SMAP, and PKE flags in control register CR4 (bit 4, bit 5, bit 7, bit 17, bit 20, bit 21, and bit 22, respectively).
 
 > •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
