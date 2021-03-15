@@ -2,7 +2,7 @@
 #include <kernel/isr.h>
 #include <kernel/pic_8259.h>
 
-static irq_handlers irq_routines[16] = { NULL };
+static void* irq_routines[16] = { NULL };
 
 void irq_install_handler(uint8_t irq_line, irq_handlers handler)
 {
