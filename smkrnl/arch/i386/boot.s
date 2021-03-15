@@ -9,7 +9,8 @@ CHECKSUM equ -(MAGIC + FLAGS)   ; checksum of above, to prove we are multiboot
 extern terminal_initialize
 extern _simple_banner
 extern _end_banner
-extern gdt_install
+extern gdt_install ; you'll be missed
+extern paging_on   ; memory segmentation replacement
 extern idt_install
 extern kmain
 
@@ -60,7 +61,9 @@ _start:
         ; be enabled here.
 	; C++ features such as global constructors and exceptions will require
 	; runtime support to work as well.
-        call gdt_install
+        
+        call gdt_install ; -> goodbye ;(
+        ; call paging_on
         call idt_install
 
         ; End of banner
