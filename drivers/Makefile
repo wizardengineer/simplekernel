@@ -6,7 +6,7 @@ KERNEL_INCLUDE = -I../include/
 LIBC_INCLUDE = -I../libc/include/ 
 INCLUDE = $(LIBC_INCLUDE) $(KERNEL_INCLUDE)
 
-DRIVER_OBJECTS = io_port.o vga.o serial_port.o
+DRIVER_OBJECTS = io_port.o vga.o serial_port.o keyboard.o
 
 compile-drivers: $(DRIVER_OBJECTS)
 
