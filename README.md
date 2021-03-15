@@ -226,19 +226,19 @@ Paging behavior is controlled by the following control bits:
 > •     The WP and PG flags in control register CR0 (bit 16 and bit 31, respectively).
 
 > •     The PSE, PAE, PGE, PCIDE, SMEP, SMAP, and PKE flags in control register CR4 (bit 4, bit 5, bit 7, bit 17, bit 20, bit 21, and bit 22, respectively).
-<<<<<<< HEAD
+
+
+> •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
+> •     The AC flag in the EFLAGS register (bit 18).
+> By Chapter 4 of [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 4](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
+
+
 
 > •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
 > •     The AC flag in the EFLAGS register (bit 18).
 > Chapter 4 of [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 4](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
 
-=======
 
-> •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
-> •     The AC flag in the EFLAGS register (bit 18).
-> Chapter 4 of [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 4](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
-
->>>>>>> 572dee319284e9832113be883dfe720618810953
 <br>
 
 ## Credit - Special Thanks to the OGs:
@@ -271,7 +271,4 @@ For understanding descriptor tables:
 https://en.wikipedia.org/wiki/Global_Descriptor_Table
 ```
 -->
-<<<<<<< HEAD
 
-=======
->>>>>>> 572dee319284e9832113be883dfe720618810953
