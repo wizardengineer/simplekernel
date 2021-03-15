@@ -39,13 +39,15 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
     * [Interrupt Descriptor Table (IDT)](#idt)
 
 * Paging
+    * [MMU](#mmu)
     * [What is paging](#paging)
 
 ## Modes
 *   <a name="real_mode"> **Real Mode** </a> <br> The name derived from the idea that it's addresses always correspond to real locations in memory, Physical Memory. In comparsion to other modes, Real Mode is a simple and finite 16-bit mode that is presented in every x86 processors. It was the only available mode proved by early x86 designs CPUs. Until the Intel80{286} Protected mode initially came forth. It's finite in comparsion to it's derivatives or successors Protected and Long Mode due to it having less than 1 MB of RAM available for use. There is no hardware-based memory protection (GDT), no virtual memory, no security mitigrations. Forthermore, don't let the finite size impose a misleading conception upon accessibility of Real Mode, It still has access to 32-bit registers (eax, ebx, ...). Before other modes can be loaded, it initiate some programs first within the Real Mode before getting loaded. Real Mode is considerable the true way of having access to the BIOS and it's low level API functionality.
 <br>
 
-*   <a name="protected_mode"> **Protected Mode** </a> <br> 
+*   <a name="protected_mode"> **Protected Mode** </a> <br> This mode is a featured for 32 bit operating systems, runs after Real Mode. It provides a set of features, if set will enable, will increase more fluent and systematic control over software. Such features include virtual memory, paging, and safe multi-tasking. Through the process of the execution of Protected Mode, memory segmentation is not optional and is needed to be set up for Protected Mode. Thanks to the use grub amazing help, I don't need to program my own Protected Mode as it's provided. I gave a simple example of how protected mode would be programmed in assembly (protected_mode.asm)[smkrnl/arch/i386/protected_mode32.asm].
+*   
 <br>
 
 <!-- Things to add
@@ -53,7 +55,7 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
         *How it's loaded/activated and show the use 
         case of control registers-->
 
-*   <a name="long_mode"> **Long Mode** </a> <br> 
+*   <a name="long_mode"> **Long Mode** </a> <br> This mode allows x86_64 architecture computers have access to 64 bit operating systems registers and instructions. The bootloader lies in Real Mode, then the 64 bit kernel checks and switches the CPU to long mode via 64 bit register (EFER)[https://en.wikipedia.org/wiki/Control_register#EFER]
 <br>
 
 ## Interrupts
