@@ -5,7 +5,16 @@
 </p>
 
 # Motivation
-This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories and laws on the underlying mysteries of operating systems and kernels. I had presumed, I had a *okay* idea on how OSs worked. However, creating your own OS was absolutely way more definite compared to just reading about, in my own honest opinion. This was a way for me to have a better of software I want to mess with on kernel mode  and user mode.
+This was a great learning curve that seemingly helped me foster more theoretical and conceptual ideas surrounding theories/laws on the underlying mysteries of operating systems and kernels. I had presumed, I had an *okay* idea on how OSs worked. However, creating my own OS was absolutely way more definite compared to just reading about. In my own, honest opinion. This was a way for me to have a better understanding of software I would want to mess with on kernel mode and user mode.
+
+# Resource I relied on:
+   * [Intel Manual](https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html)
+   * [AMD manual](https://www.amd.com/system/files/TechDocs/24593.pdf)
+   * [Reading the Linux Kernel](https://github.com/torvalds/linux/)
+   * [Wiki.osdev](https://wiki.osdev.org/)
+   * [Shichao Notes](https://notes.shichao.io/utlk/ch2/)
+   * [irql0 carbonOS](https://github.com/irql0/carbon)
+   * [OSDever](http://www.osdever.net/bkerndev/Docs/intro.htm)
 
 # A Table of Contents of Things I've learnt:
 Before we begin, even though the kernel and operating system is 32bit. I will be explaining concepts in 64 bit too, evidently one of them being Long Mode. 
@@ -30,13 +39,17 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
     * [Interrupt Descriptor Table (IDT)](#idt)
 
 * Paging
+    * [MMU](#mmu)
     * [What is paging](#paging)
 
 ## Modes
 *   <a name="real_mode"> **Real Mode** </a> <br> The name derived from the idea that it's addresses always correspond to real locations in memory, Physical Memory. In comparsion to other modes, Real Mode is a simple and finite 16-bit mode that is presented in every x86 processors. It was the only available mode proved by early x86 designs CPUs. Until the Intel80{286} Protected mode initially came forth. It's finite in comparsion to it's derivatives or successors Protected and Long Mode due to it having less than 1 MB of RAM available for use. There is no hardware-based memory protection (GDT), no virtual memory, no security mitigrations. Forthermore, don't let the finite size impose a misleading conception upon accessibility of Real Mode, It still has access to 32-bit registers (eax, ebx, ...). Before other modes can be loaded, it initiate some programs first within the Real Mode before getting loaded. Real Mode is considerable the true way of having access to the BIOS and it's low level API functionality.
 <br>
 
-*   <a name="protected_mode"> **Protected Mode** </a> <br> 
+*   <a name="protected_mode"> **Protected Mode** </a> <br> This mode is a featured for 32 bit operating systems, runs after Real Mode. It provides a set of features, if set will enable, will increase more fluent and systematic control over software. Such features include virtual memory, paging, and safe multi-tasking. Through the process of the execution of Protected Mode, memory segmentation is not optional and is needed to be set up for Protected Mode. Thanks to the use grub amazing help, I don't need to program my own Protected Mode as it's provided. I gave a simple example of how protected mode would be programmed in assembly [protected_mode.asm](smkrnl/arch/i386/protected_mode32.asm).
+
+Read up more on Protected Mode in [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 3](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf) 
+*   
 <br>
 
 <!-- Things to add
@@ -44,7 +57,7 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
         *How it's loaded/activated and show the use 
         case of control registers-->
 
-*   <a name="long_mode"> **Long Mode** </a> <br> 
+*   <a name="long_mode"> **Long Mode** </a> <br> This mode allows x86_64 architecture computers have access to 64 bit operating systems registers and instructions. The bootloader lies in Real Mode, then the 64 bit kernel checks and switches the CPU to long mode via 64 bit register [EFER](https://en.wikipedia.org/wiki/Control_register#EFER)
 <br>
 
 ## Interrupts
@@ -71,7 +84,11 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
 ```
 <br>
 
-*   <a name="irq"> **Interrupt Request (IQR)** </a> <br> Interrupt Request (IRQ) or Hardware Interrupts, these type of interrupts are yield externally by the chipset that correspond to the Hardware. Through the course of simplekernel, I've only set up 16 ISR for 16 IRQ (0-15).
+*   <a name="irq"> **Interrupt Request (IQR)** </a> <br> Interrupt Request (IRQ) or Hardware Interrupts, these type of interrupts are yield externally by the chipset that correspond to the Hardware. Through the course of simplekernel, I've only set up 16 ISR for 16 IRQ (0-15).There are two types of IRQs in common use today.
+> *IRQ Lines, or Pin-based IRQs:* These are typically statically routed on the chipset. Wires or lines run from the devices on the chipset to an IRQ controller which serializes the interrupt requests sent by devices, sending them to the CPU one by one to prevent races. In many cases, an IRQ Controller will send multiple IRQs to the CPU at once, based on the priority of the device. An example of a very well known IRQ Controller is the Intel 8259 controller chain, which is present on all IBM-PC compatible chipsets, chaining two controllers together, each providing 8 input pins for a total of 16 usable IRQ signalling pins on the legacy IBM-PC.
+
+> *Message Based Interrupts:* These are signalled by writing a value to a memory location reserved for information about the interrupting device, the interrupt itself, and the vectoring information. The device is assigned a location to which it writes either by firmware or by the kernel software. Then, an IRQ is generated by the device using an arbitration protocol specific to the device's bus. An example of a bus which provides message based interrupt functionality is the PCI Bus.
+> By wiki.osdev - https://wiki.osdev.org/Interrupts
 <br>
 
 *   <a name="ist"> **Interrupt Stack Table (IST)** </a> <br> 
@@ -119,6 +136,12 @@ Before we begin, even though the kernel and operating system is 32bit. I will be
         +--------------------------------------------------+----+--------+
 
         TI = Table Indicator: 0 = GDT, 1 = LDT
+        
+        The TI specify if the Descriptor were dealing with is a GDT or LDT
+        IF(TI == 0) THEN
+            ... THE DESCRIPTOR IS A GDT
+        ELSEIF(TI == 1) THEN
+            ... THE DESCRIPTOR IS A LDT
         ```
 <br>
 
@@ -189,31 +212,39 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 
 <br>
 
-*   <a name="idt"> **Interrupt Descriptor Table (IDT)** </a> <br> Interrupt Descriptor Tables (IDT) are close to being the same as Global Descriptor Tables except that the [Descriptor format](#table) for the IDT has no [limits](#keywords). The IDT holds entries or gates for the ISR of every Interrupt.
+*   <a name="idt"> **Interrupt Descriptor Table (IDT)** </a> <br> Interrupt Descriptor Tables are close to being the same as Global Descriptor Tables except that the [Descriptor format](#table) for the IDT has no [limits](#keywords). The IDT holds entries or gates for the ISR of every Interrupt.
 <br>
 
 
 ## Paging
-*   <a name="paging"> **What is Paging** </a> <br> 
+*   <a name="paging"> **What is Paging** </a> <br> This was by far the most fun I had, I was extremely excited once I understood it. 
 <br>
 
-*   <a name=""> ** </a> <br> 
+*   <a name="Page Modes and Control Bits"> ** </a> <br>
+> Paging behavior is controlled by the following control bits:
+> •     The WP and PG flags in control register CR0 (bit 16 and bit 31, respectively).
+> •     The PSE, PAE, PGE, PCIDE, SMEP, SMAP, and PKE flags in control register CR4 (bit 4, bit 5, bit 7, bit 17, bit 20, bit 21, and bit 22, respectively).
+
+> •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
+> •     The AC flag in the EFLAGS register (bit 18).
+> Chapter 4 of [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 4](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
+
 <br>
 
-## Thanks for the help:
-<br>
-Thanks to the fams [xeroxz](https://twitter.com/_xeroxz?lang=en) , [Daax](https://twitter.com/daax_rynd), 
-[Irql0](https://github.com/irql0) and Dinero {born anew} for the spark of inspiration on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
-
-<br>
-
-**Honorable fam mentions**: <br>
-Some [LLE](https://discord.gg/MvtdVcUsJs) members
-
-[Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
+## Credit - Special Thanks to the OGs:
+  for the spark of inspiration/support on my continuous effort on this project and for helping me understand certain concepts within kernel/OS development. =)
+  * [xeroxz](https://twitter.com/_xeroxz?lang=en) 
+  * [Daax](https://twitter.com/daax_rynd)
+  * [Irql0](https://github.com/irql0) 
+  * [Dinero {born anew}](https://github.com/54)
 <br>
 
+   *  **Honorable fam mentions**: <br>
+   [LLE](https://discord.gg/MvtdVcUsJs) members <br>
+   [Red Vice](https://discord.gg/azxCJbh) members such as [Chc4](https://github.com/chc4) and Internal
+   <br>
 
+<!--
 ## Resource that undeceive my research:
 ```
 https://wiki.osdev.org/Printing_To_Screen
@@ -229,3 +260,5 @@ https://www.amd.com/system/files/TechDocs/24593.pdf
 For understanding descriptor tables:
 https://en.wikipedia.org/wiki/Global_Descriptor_Table
 ```
+-->
+
