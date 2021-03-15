@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <static_assert.h>
 
 typedef union _gdt_descriptor
 {
@@ -19,12 +20,16 @@ typedef union _gdt_descriptor
     uint64_t base_high    : 8;
   };
 } __attribute__((packed)) gdt_entry_t;
+//static_assert((sizeof(gdt_entry_t) == 64),
+//              "GDT Entry fmt size mismatch");
 
 typedef struct _gdt_ptr
 {
   uint16_t limit;
   uint32_t base;
 } __attribute__((packed)) gdt_ptr_t;
+//static_assert(sizeof(gdt_ptr_t) == 48,
+//              "GDTR fmt size mismatch");
 
 typedef struct _tss_segment_fmt
 {
