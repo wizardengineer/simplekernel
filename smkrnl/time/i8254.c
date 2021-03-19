@@ -27,12 +27,12 @@ static void timer_phase(int hz)
 void timer_handler(regs ctx)
 {
   ticks++;
+  timer_phase(100); // 60 Hz
 
   if(ticks % 100 == 0) { 
     sec++;
     printk(KERN_DEBUG "Seconds: %d\n", sec); 
   }
-  timer_phase(100); // 60 Hz
 }
 
 void timer_install()
