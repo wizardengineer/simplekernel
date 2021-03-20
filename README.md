@@ -217,7 +217,14 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 
 
 ## Paging
-*   <a name="paging"> **What is Paging** </a> <br> This was by far the most fun I had, I was extremely excited once I understood it. 
+*   <a name="mmu"> **MMU (Memory Management Unit)** </a> <br> MMU (Memory Management Unit), is a vital hardware that does translation for address logic. It first transforms logical address into linear address, with the magic of the segmenation unit hardware circuit. Then the MMU transforms that linear address into physical address, with the help of the second hardware circuit, paging unit.
+
+<img align=center style="width: 100%" src="https://notes.shichao.io/utlk/figure_2-1.png" /></center>
+
+
+*   <a name="paging"> **What is Paging** </a> <br> 
+> reference to this and on onwards. https://notes.shichao.io/utlk/ch2/#paging-in-hardware
+This was by far the most fun I had, I was extremely excited once I understood it. 
 
 *   x86 OS Legacy-paging virtual address with 4KB pages:
 <img align=center style="width: 100%" src="https://i.imgur.com/dan9jKU_d.webp?maxwidth=760&fidelity=grand" /></center>
