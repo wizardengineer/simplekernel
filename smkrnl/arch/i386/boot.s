@@ -14,6 +14,11 @@ extern paging_on   ; memory segmentation replacement
 extern idt_install
 extern kmain
 
+; Other externs
+extern timer_install
+extern keyboard_install
+
+
 ; Setting the standards for the multiboot header to mark this
 ; as the kernel.
 section .multiboot
@@ -65,6 +70,9 @@ _start:
         call gdt_install ; -> goodbye ;(
         ; call paging_on
         call idt_install
+
+        call timer_install
+        call keyboard_install
 
         ; End of banner
         call _end_banner

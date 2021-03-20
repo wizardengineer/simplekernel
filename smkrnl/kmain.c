@@ -8,8 +8,16 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Externs of security type functions */
+extern void supervisor_protection_init(); // smep and smap
+
 void kmain()
 {
+  /* IRQ type functions */
   timer_install();
   keyboard_install();
+
+  /* Security type functions*/
+  supervisor_protection_init();
+
 }

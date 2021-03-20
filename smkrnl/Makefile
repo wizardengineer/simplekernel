@@ -4,6 +4,7 @@ include $(ROOTDIR.CONFIG)
 
 ARCHDIR   = arch/i386/
 DRIVERS   = ../drivers/
+SECUDIR   = ../security/
 DTABLEDIR = tables/
 INTERPDIR = intps/
 TIMEDIR   = time/
@@ -30,6 +31,9 @@ DTABLES = \
 	 $(DTABLEDIR)idt.o       \
 	 $(DTABLEDIR)idt_set.o
 
+SECUR_OBJECTS = \
+	$(SECUDIR)smep_smap.o
+
 INTERPS = \
 	 $(INTERPDIR)exception.o     \
 	 $(INTERPDIR)exception_set.o \
@@ -51,6 +55,8 @@ PRINTK_OBJECTS = \
 TIME_OBJECTS = \
 	 $(TIMEDIR)i8254.o
 
+
+
 #-------------------------------------------------------------------------
 # Simple debug handler
 # ------------------------------------------------------------------------
@@ -61,7 +67,7 @@ DEBUG_INFO = off
 #       $(CC) += -DDEBUG -ggdb
 #endif
 
-.SUFFIXES: .o .c .s
+.SUFFIXES: .o .c .s .asm
 
 all: kernel.elf
 
@@ -69,11 +75,11 @@ all: kernel.elf
 # Simple rules that hold simple commands
 # ------------------------------------------------------------------------
 
-kernel.elf: kmain.o libc-compile dtables-compile
+kernel.elf: kmain.o libc-compile dtables-compile security
 	ld $(LDFLAGS) $(LIBC_OBJECTS) \
 	   $(KERNEL_OBJECTS) \
 	   $(DTABLES) $(INTERPS) $(PRINTK_OBJECTS) \
-	   $(TIME_OBJECTS) -o kernel.elf
+	   $(TIME_OBJECTS) $(SECUR_OBJECTS) -o kernel.elf
 
 simplekernel.iso: kernel.elf
 	cp kernel.elf ../isodir/boot/kernel.elf
@@ -121,8 +127,11 @@ kmain.o: drivers-compile printk-compile timer-compile
 	(cd $(ARCHDIR) && make compile-arch);
 	$(CC) $(CFLAGS) kmain.c -o kmain.o
 
+security: 
+	(cd $(SECUDIR) && make compile-security);
+
 $(PRINTK)/%.o: %.c
-	$(CC) $(CFLAGS) $< -o $@ 
+	$(CC) $(CFLAGS) $< -o $@
 
 timer-compile: $(TIME_OBJECTS)  # Used to temporarly test a rule
 
@@ -150,6 +159,7 @@ clean:
 	rm -rf $(ARCHDIR)*.o
 	rm -rf *.elf
 	rm -rf ../isodir/boot/*.elf
+	rm -rf ../security/*.o
 	rm -rf ../drivers/*.o
 	rm -rf tables/*.o
 	rm -rf intps/*.o

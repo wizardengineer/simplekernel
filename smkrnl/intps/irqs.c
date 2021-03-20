@@ -2,7 +2,7 @@
 #include <kernel/isr.h>
 #include <kernel/pic_8259.h>
 
-static void* irq_routines[16] = { NULL };
+static irq_handlers irq_routines[16] = { NULL };
 
 void irq_install_handler(uint8_t irq_line, irq_handlers handler)
 {
@@ -26,7 +26,7 @@ void irq_interrupt_handler(regs ctx)
   }
 
   /* If the IRQ is greater than 40 (meaning it's a slave pic) 
-   * then we need ot EOI ( The completion of an interrupt) to 
+   * then we need to EOI ( The completion of an interrupt) to 
    * the slave controller*/
   pic_send_eoi(irq_num);
 }
