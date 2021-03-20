@@ -218,6 +218,16 @@ Read up more on it in the [AMD64 Architecture Programmer’s Manual, Volume 2](h
 
 ## Paging
 *   <a name="paging"> **What is Paging** </a> <br> This was by far the most fun I had, I was extremely excited once I understood it. 
+
+*   x86 OS Legacy-paging virtual address with 4KB pages:
+<img align=center style="width: 100%" src="https://i.imgur.com/dan9jKU_d.webp?maxwidth=760&fidelity=grand" /></center>
+
+*   x86 OS CR4.PAE paging virtual address with 4KB page:
+<img align=center style="width: 100%" src="https://i.imgur.com/EoLVO8F.jpg" /></center>
+
+*   x86_64 (ia-32e) OS CR4.LME/CR4.PAE paging virtual address with 4KB page:
+<img align=center style="width: 100%" src="https://i.imgur.com/yxP6VYi.jpg" /></center>
+
 <br>
 
 *   <a name="Page Modes and Control Bits"> **Page Modes and Control Bits** </a> <br>
@@ -237,6 +247,8 @@ Paging behavior is controlled by the following control bits:
 > •     The LME and NXE flags in the IA32_EFER MSR (bit 8 and bit 11, respectively).
 > •     The AC flag in the EFLAGS register (bit 18).
 > Chapter 4 of [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1; Chapter 4](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf)
+
+If CR4.PAE and/or CR4.LME is set to 1, then PSE is completely disregarded.
 
 
 <br>
