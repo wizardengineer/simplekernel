@@ -257,6 +257,11 @@ Paging behavior is controlled by the following control bits:
 
 If CR4.PAE and/or CR4.LME is set to 1, then PSE is completely disregarded.
 
+### Commands, if you want to use. 
+No terminal added
+```
+cd smkrnl; make run
+```
 
 <br>
 
