@@ -148,7 +148,7 @@ Read up more on Protected Mode in [Intel® 64 and IA-32 Architectures Software D
 *   <a name="table"> **What exactly is a Table and a Descriptor** </a> <br> To simply put it, Descriptor Tables are data structures. You can think of Table as being an array and the Descriptor as being the elements in the Table (the array). The Selector segment holds the index and iterates through the Table in order to point at a Descriptor. 
 <br>
 
-*   <a name="gdt"> **Use case of GDT** </a> <br> Being one of the segment descriptor tables, The Global Descriptor Table (GDT) is a protection measure, data structure that uses a heuristic approach in creating sections or segments (aka Segment Descriptors) that are called entries within areas of memory that hold certain characteristics on the privileges that have been assign to that memory region. The characteristics that the entries hold are the start of where it's be in memory, limit which is the size of teh entry, and the access privilege of the entry.
+*   <a name="gdt"> **Use case of GDT** </a> <br> Being one of the segment descriptor tables, The Global Descriptor Table (GDT) is a protection measure, data structure that uses a heuristic approach in creating sections or segments (aka Segment Descriptors) that are called entries within areas of memory that'll hold certain characteristics of the privileges that have been assign to that memory region. The characteristics that entries, holds the start of where it'll be in memory, limit which is the size of the entry, and the access privilege of the entry.
 
 GDT is 1:1 with Logical Address, An example of the GDT working with the selector:
 
